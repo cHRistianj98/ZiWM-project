@@ -1,10 +1,10 @@
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.base import clone
 from sklearn.metrics import accuracy_score
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+from ImpKNN import ImpKNN
 
 dataset_columns = [
     'Age',
@@ -57,12 +57,12 @@ columns_sorted_by_usefulness = {
 
 # classifiers with manhattan and euclidean metrics
 clfs = {
-    'KNN2M': KNeighborsClassifier(n_neighbors=2, metric='manhattan'),
-    'KNN2E': KNeighborsClassifier(n_neighbors=2, metric='euclidean'),
-    'KNN5M': KNeighborsClassifier(n_neighbors=5, metric='manhattan'),
-    'KNN5E': KNeighborsClassifier(n_neighbors=5, metric='euclidean'),
-    'KNN8M': KNeighborsClassifier(n_neighbors=8, metric='manhattan'),
-    'KNN8E': KNeighborsClassifier(n_neighbors=8, metric='euclidean'),
+    'KNN3M': ImpKNN(k=3, metric='manhattan'),
+    'KNN3E': ImpKNN(k=3, metric='euclidean'),
+    'KNN5M': ImpKNN(k=5, metric='manhattan'),
+    'KNN5E': ImpKNN(k=5, metric='euclidean'),
+    'KNN7M': ImpKNN(k=7, metric='manhattan'),
+    'KNN7E': ImpKNN(k=7, metric='euclidean'),
 }
 
 
@@ -89,7 +89,8 @@ dataset = np.genfromtxt("../dataset/thyroid.csv", delimiter=", ")
 experiment_dataset = create_dataset_for_experiment()
 X = experiment_dataset
 y = dataset[:, -1].astype(int)
-shift = [-20, -19, -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0]
+# shift = [-20, -19, -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0]
+shift = [-20]
 
 for data_id in tqdm(shift):
     if data_id == 0:
@@ -97,7 +98,9 @@ for data_id in tqdm(shift):
     else:
         X = experiment_dataset[:, :data_id]
     for fold_id, (train, test) in enumerate(rskf.split(X, y)):
+        # print("fold_id: ", fold_id)
         for clf_id, clf_name in enumerate(clfs):
+            # print("clf_id: ", clf_id)
             clf = clone(clfs[clf_name])
             clf.fit(X[train], y[train])
             y_pred = clf.predict(X[test])
@@ -106,4 +109,4 @@ for data_id in tqdm(shift):
 mean_scores = np.mean(scores, axis=2).T
 # print("\nMean scores:\n", np.array(mean_scores).reshape((126,)))
 mean_scores = np.transpose(mean_scores)
-pd.DataFrame(mean_scores).to_csv("results.csv", header=None, index=None)
+pd.DataFrame(mean_scores).to_csv("results1.csv", header=None, index=None)

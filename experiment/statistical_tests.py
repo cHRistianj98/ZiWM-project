@@ -4,12 +4,12 @@ from tabulate import tabulate
 import numpy as np
 
 clfs = {
-    'KNN2M': KNeighborsClassifier(n_neighbors=2, metric='manhattan'),
-    'KNN2E': KNeighborsClassifier(n_neighbors=2, metric='euclidean'),
+    'KNN3M': KNeighborsClassifier(n_neighbors=2, metric='manhattan'),
+    'KNN3E': KNeighborsClassifier(n_neighbors=2, metric='euclidean'),
     'KNN5M': KNeighborsClassifier(n_neighbors=5, metric='manhattan'),
     'KNN5E': KNeighborsClassifier(n_neighbors=5, metric='euclidean'),
-    'KNN8M': KNeighborsClassifier(n_neighbors=8, metric='manhattan'),
-    'KNN8E': KNeighborsClassifier(n_neighbors=8, metric='euclidean'),
+    'KNN7M': KNeighborsClassifier(n_neighbors=8, metric='manhattan'),
+    'KNN7E': KNeighborsClassifier(n_neighbors=8, metric='euclidean'),
 }
 
 scores_file_name = "results.csv"
@@ -23,8 +23,8 @@ for i in range(len(clfs)):
         for j in range(len(clfs)):
             t_statistic[i, j], p_value[i, j] = ttest_ind(scores[i], scores[j])
 
-headers = ["KNN2M", "KNN2E", "KNN5M", "KNN5E", "KNN8M", "KNN8E"]
-names_column = np.array([["KNN2M"], ["KNN2E"], ["KNN5M"], ["KNN5E"], ["KNN8M"], ["KNN8E"]])
+headers = ["KNN3M", "KNN3E", "KNN5M", "KNN5E", "KNN7M", "KNN7E"]
+names_column = np.array([["KNN3M"], ["KNN3E"], ["KNN5M"], ["KNN5E"], ["KNN7M"], ["KNN7E"]])
 t_statistic_table = np.concatenate((names_column, t_statistic), axis=1)
 t_statistic_table = tabulate(t_statistic_table, headers, floatfmt=".2f")
 p_value_table = np.concatenate((names_column, p_value), axis=1)
