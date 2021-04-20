@@ -31,7 +31,7 @@ def print_features_ranking_with_plot(features_ranking, used_score_func):
     plt.title(f'Ranking oparty na {used_score_func}')
     plt.xscale('log')
     plt.show()
-    plt.savefig(fname='rank.png', orientation='landscape')
+    plt.savefig(fname='ranking.png', orientation='landscape')
 
 
 dataset_classes = {

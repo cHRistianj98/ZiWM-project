@@ -89,8 +89,7 @@ dataset = np.genfromtxt("../dataset/thyroid.csv", delimiter=", ")
 experiment_dataset = create_dataset_for_experiment()
 X = experiment_dataset
 y = dataset[:, -1].astype(int)
-# shift = [-20, -19, -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0]
-shift = [-20]
+shift = [-20, -19, -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0]
 
 for data_id in tqdm(shift):
     if data_id == 0:
@@ -98,9 +97,7 @@ for data_id in tqdm(shift):
     else:
         X = experiment_dataset[:, :data_id]
     for fold_id, (train, test) in enumerate(rskf.split(X, y)):
-        # print("fold_id: ", fold_id)
         for clf_id, clf_name in enumerate(clfs):
-            # print("clf_id: ", clf_id)
             clf = clone(clfs[clf_name])
             clf.fit(X[train], y[train])
             y_pred = clf.predict(X[test])
@@ -109,4 +106,4 @@ for data_id in tqdm(shift):
 mean_scores = np.mean(scores, axis=2).T
 # print("\nMean scores:\n", np.array(mean_scores).reshape((126,)))
 mean_scores = np.transpose(mean_scores)
-pd.DataFrame(mean_scores).to_csv("results1.csv", header=None, index=None)
+pd.DataFrame(mean_scores).to_csv("results.csv", header=None, index=None)
