@@ -1,15 +1,16 @@
 from scipy.stats import ttest_ind
-from sklearn.neighbors import KNeighborsClassifier
 from tabulate import tabulate
 import numpy as np
 
+from ImpKNN import ImpKNN
+
 clfs = {
-    'KNN3M': KNeighborsClassifier(n_neighbors=3, metric='manhattan'),
-    'KNN3E': KNeighborsClassifier(n_neighbors=3, metric='euclidean'),
-    'KNN5M': KNeighborsClassifier(n_neighbors=5, metric='manhattan'),
-    'KNN5E': KNeighborsClassifier(n_neighbors=5, metric='euclidean'),
-    'KNN7M': KNeighborsClassifier(n_neighbors=7, metric='manhattan'),
-    'KNN7E': KNeighborsClassifier(n_neighbors=7, metric='euclidean'),
+    'KNN3M': ImpKNN(k=3, metric='manhattan'),
+    'KNN3E': ImpKNN(k=3, metric='euclidean'),
+    'KNN5M': ImpKNN(k=5, metric='manhattan'),
+    'KNN5E': ImpKNN(k=5, metric='euclidean'),
+    'KNN7M': ImpKNN(k=7, metric='manhattan'),
+    'KNN7E': ImpKNN(k=7, metric='euclidean'),
 }
 
 scores_file_name = "results.csv"
