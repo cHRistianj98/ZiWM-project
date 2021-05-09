@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.neighbors import DistanceMetric
+from scipy import stats
 from tqdm import tqdm
 
 
@@ -45,24 +46,11 @@ class ImpKNN(BaseEstimator, ClassifierMixin):
 
     def predict(self, X):
         y_pred = []
-
         for x_query in tqdm(X):
             neighbors = self.get_neighbors(x_query, zip(self.X_, self.y_))
-
-            class_occurence = [[] for _ in range(3)]
-            max_occurence = [0, 0]
-
-            for i in range(3):
-                class_occurence[i].append(i + 1)
-                occurence = 0
-                for x in range(self.k):
-                    if neighbors[x][1] == i + 1:
-                        occurence += 1
-                class_occurence[i].append(occurence)
-                if occurence > max_occurence[1]:
-                    max_occurence[0] = i + 1
-                    max_occurence[1] = occurence
-
-            y_pred.append(max_occurence[0])
-
+            neighbors_labels = []
+            for k in range(self.k):
+                neighbors_labels.append(neighbors[k][1])
+            mode, _ = stats.mode(neighbors_labels)
+            y_pred.append(mode[0])
         return y_pred

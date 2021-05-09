@@ -3,6 +3,7 @@ from sklearn.base import clone
 from sklearn.metrics import accuracy_score
 import numpy as np
 import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
 from tqdm import tqdm
 from ImpKNN import ImpKNN
 
@@ -56,17 +57,25 @@ columns_sorted_by_usefulness = {
 }
 
 # classifiers with manhattan and euclidean metrics
+# clfs = {
+#     'KNN3M': ImpKNN(k=3, metric='manhattan'),
+#     'KNN3E': ImpKNN(k=3, metric='euclidean'),
+#     'KNN5M': ImpKNN(k=5, metric='manhattan'),
+#     'KNN5E': ImpKNN(k=5, metric='euclidean'),
+#     'KNN7M': ImpKNN(k=7, metric='manhattan'),
+#     'KNN7E': ImpKNN(k=7, metric='euclidean'),
+# }
+
 clfs = {
-    'KNN3M': ImpKNN(k=3, metric='manhattan'),
-    'KNN3E': ImpKNN(k=3, metric='euclidean'),
-    'KNN5M': ImpKNN(k=5, metric='manhattan'),
-    'KNN5E': ImpKNN(k=5, metric='euclidean'),
-    'KNN7M': ImpKNN(k=7, metric='manhattan'),
-    'KNN7E': ImpKNN(k=7, metric='euclidean'),
+    'KNN3M': KNeighborsClassifier(n_neighbors=3, metric='manhattan'),
+    'KNN3E': KNeighborsClassifier(n_neighbors=3, metric='euclidean'),
+    'KNN5M': KNeighborsClassifier(n_neighbors=5, metric='manhattan'),
+    'KNN5E': KNeighborsClassifier(n_neighbors=5, metric='euclidean'),
+    'KNN7M': KNeighborsClassifier(n_neighbors=7, metric='manhattan'),
+    'KNN7E': KNeighborsClassifier(n_neighbors=7, metric='euclidean'),
 }
 
 
-# recall_arr = np.concatenate((recall_arr, div[0]), axis=1)
 def create_dataset_for_experiment():
     result = np.array(dataset[:, columns_sorted_by_usefulness.get('TSH')]).reshape((dataset.shape[0], 1))
     for key, value in enumerate(columns_sorted_by_usefulness):
@@ -89,7 +98,8 @@ dataset = np.genfromtxt("../dataset/thyroid.csv", delimiter=", ")
 experiment_dataset = create_dataset_for_experiment()
 X = experiment_dataset
 y = dataset[:, -1].astype(int)
-shift = [-20, -19, -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0]
+# shift = [-20, -19, -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0]
+shift = [-16]
 
 for data_id in tqdm(shift):
     if data_id == 0:
@@ -107,3 +117,7 @@ mean_scores = np.mean(scores, axis=2).T
 # print("\nMean scores:\n", np.array(mean_scores).reshape((126,)))
 mean_scores = np.transpose(mean_scores)
 pd.DataFrame(mean_scores).to_csv("results.csv", header=None, index=None)
+
+# data for statistical tests
+stat_tests_data = scores[:, 4, :]
+pd.DataFrame(stat_tests_data).to_csv("stat_tests_data.csv", header=None, index=None)
