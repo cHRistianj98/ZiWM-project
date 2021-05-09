@@ -13,7 +13,7 @@ clfs = {
     'KNN7E': ImpKNN(k=7, metric='euclidean'),
 }
 
-scores_file_name = "results.csv"
+scores_file_name = "stat_tests_data.csv"
 stat_better_table_file_name = "stat_better_table_accuracy"
 alfa = .05
 t_statistic = np.zeros((len(clfs), len(clfs)))
@@ -48,8 +48,7 @@ print("metrics name:", "accuracy", "\nStatistically significantly better:\n", st
 
 np.save(stat_better_table_file_name, stat_better_table)
 
-# create results.csv
-results = np.genfromtxt("results.csv", delimiter=",")
+results = np.genfromtxt("stat_tests_data.csv", delimiter=",")
 results_mean = np.mean(results, axis=1)
 results = results_mean.tolist()
 np.savetxt("stat_tests.csv", results, delimiter=",")
