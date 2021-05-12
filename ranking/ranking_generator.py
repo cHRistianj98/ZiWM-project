@@ -71,7 +71,6 @@ for i, file in enumerate(glob.glob("../dataset/thyroid.csv"), 1):
     data_list.append(data_set)
 
 dataset = pd.concat(data_list, axis=0)
-# dataset.columns = dataset_columns
 dataset.info()
 
 x = dataset.drop(21, axis=1)

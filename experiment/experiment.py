@@ -3,7 +3,6 @@ from sklearn.base import clone
 from sklearn.metrics import accuracy_score
 import numpy as np
 import pandas as pd
-from sklearn.neighbors import KNeighborsClassifier
 from tqdm import tqdm
 from ImpKNN import ImpKNN
 
@@ -57,22 +56,13 @@ columns_sorted_by_usefulness = {
 }
 
 # classifiers with manhattan and euclidean metrics
-# clfs = {
-#     'KNN3M': ImpKNN(k=3, metric='manhattan'),
-#     'KNN3E': ImpKNN(k=3, metric='euclidean'),
-#     'KNN5M': ImpKNN(k=5, metric='manhattan'),
-#     'KNN5E': ImpKNN(k=5, metric='euclidean'),
-#     'KNN7M': ImpKNN(k=7, metric='manhattan'),
-#     'KNN7E': ImpKNN(k=7, metric='euclidean'),
-# }
-
 clfs = {
-    'KNN3M': KNeighborsClassifier(n_neighbors=3, metric='manhattan'),
-    'KNN3E': KNeighborsClassifier(n_neighbors=3, metric='euclidean'),
-    'KNN5M': KNeighborsClassifier(n_neighbors=5, metric='manhattan'),
-    'KNN5E': KNeighborsClassifier(n_neighbors=5, metric='euclidean'),
-    'KNN7M': KNeighborsClassifier(n_neighbors=7, metric='manhattan'),
-    'KNN7E': KNeighborsClassifier(n_neighbors=7, metric='euclidean'),
+    'KNN3M': ImpKNN(k=3, metric='manhattan'),
+    'KNN3E': ImpKNN(k=3, metric='euclidean'),
+    'KNN5M': ImpKNN(k=5, metric='manhattan'),
+    'KNN5E': ImpKNN(k=5, metric='euclidean'),
+    'KNN7M': ImpKNN(k=7, metric='manhattan'),
+    'KNN7E': ImpKNN(k=7, metric='euclidean'),
 }
 
 

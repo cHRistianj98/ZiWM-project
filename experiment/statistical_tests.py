@@ -52,13 +52,3 @@ results = np.genfromtxt("stat_tests_data.csv", delimiter=",")
 results_mean = np.mean(results, axis=1)
 results = results_mean.tolist()
 np.savetxt("stat_tests.csv", results, delimiter=",")
-
-
-
-
-
-
-
-
-
-
